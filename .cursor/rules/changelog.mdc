@@ -1,0 +1,30 @@
+---
+description: Update CHANGELOG.md before every commit with a dated dev journal entry
+alwaysApply: false
+---
+# Changelog Update Rule
+
+Before every `git commit`, update `CHANGELOG.md` at the project root.
+
+## When to update
+- Before any commit the user requests
+- When the user says "sign off", "done for today", "wrap up", or similar
+
+## How to update
+1. Check today's date — if a `## YYYY-MM-DD` section for today already exists, **update it in place** with a full re-summary of everything accomplished today (not just the latest changes)
+2. If today's section does not exist, **add a new one** directly below the header block, above all previous entries
+3. Group items under `### Added`, `### Changed`, `### Fixed`, or `### Removed` as appropriate
+4. Write concise, client-friendly descriptions — this file is shown to prospective clients
+5. After updating, stage the file with `git add CHANGELOG.md` before committing
+
+## Format
+
+```markdown
+## YYYY-MM-DD
+
+### Added
+- Feature or capability described in plain language
+
+### Changed
+- What was modified and why
+```

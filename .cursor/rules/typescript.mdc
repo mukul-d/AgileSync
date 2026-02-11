@@ -1,0 +1,43 @@
+---
+description: TypeScript conventions, documentation, and API integration
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# TypeScript
+
+## Conventions
+- Prefer `interface` over `type` for object shapes
+- Use explicit return types on exported functions
+- Use `const` by default, `let` only when reassignment is needed
+- Prefer template literals over string concatenation
+
+## API Integration
+- All backend responses are wrapped in `BaseResponse` — unwrap via `json.data`
+- Use `fetch` directly; no axios or query libraries needed yet
+- Store auth tokens in `sessionStorage`, theme in `localStorage`
+- Always check `res.status` before parsing JSON
+
+## Documentation — JSDoc
+- `/** */` on all exported functions, components, interfaces, and types
+- Use `@param` for non-obvious parameters, `@returns` when needed
+
+```typescript
+// ❌ BAD
+export function applyTheme(theme: Theme): void { ... }
+export interface UserInfo { id: string; email: string }
+
+// ✅ GOOD
+/** Applies the theme to the document and persists it. */
+export function applyTheme(theme: Theme): void { ... }
+
+/** Authenticated user profile returned by the login API. */
+export interface UserInfo { id: string; email: string }
+```
+
+## Testing — Vitest
+- Use **Vitest** as the test runner — not Jest
+- Use `describe` / `it` / `expect` from Vitest globals
+- Mock `fetch` with `vi.stubGlobal('fetch', vi.fn().mockResolvedValue(...))`
+- Test files go in `src/__tests__/` mirroring source structure
+- File naming: `*.test.ts` / `*.test.tsx`

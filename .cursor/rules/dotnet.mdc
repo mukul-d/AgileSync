@@ -1,0 +1,86 @@
+---
+description: .NET 10 / C# 14 backend conventions, patterns, and documentation
+globs: **/*.cs
+alwaysApply: true
+---
+
+# .NET 10 / C# 14 Backend
+
+## Architecture
+- Use **.NET Aspire** for orchestration and service defaults
+- Use **minimal APIs** (`app.MapGet`, `app.MapPost`) — no controllers or `Startup.cs`
+- Use **dependency injection** for services and repositories
+- Use `async`/`await` throughout data access and API layers
+- Use `IOptions<T>` for configuration binding
+
+## Language Fundamentals
+- Use **file-scoped namespaces** (`namespace X;`)
+- Use **top-level statements** in `Program.cs`
+- Use **global usings**, **raw string literals** (`"""`)
+- Use **null-conditional assignment** (`obj?.Prop = value;`)
+
+## Types & Constructors
+- Use **primary constructors** for DI in classes and records
+- Use **records** for immutable DTOs and value objects
+- Use `required` properties over constructor-only init
+
+## `field` Keyword (Semi-Auto Properties)
+- Use `field` in accessors to skip manual backing fields:
+
+```csharp
+public required string Email { get => field; set => field = value.ToLowerInvariant().Trim(); }
+public string Theme { get => field; set => field = value is "dark" or "light" ? value : "dark"; } = "dark";
+```
+
+## Extension Members (Extension Blocks)
+- Prefer `extension(Type receiver)` blocks over `this` parameter syntax
+- Private helpers stay as regular static methods:
+
+```csharp
+public static class MyExtensions
+{
+    extension(IServiceCollection services)
+    {
+        public IServiceCollection AddMyService(IConfiguration config) { ... }
+    }
+}
+```
+
+## Pattern Matching & Collections
+- Use `is`, `is not`, `and`, `or` over equality chains
+- Use **switch expressions** over if/else chains
+- Use **collection expressions** (`[1, 2, 3]`) over `new[] { }` or `new List<T> { }`
+- Use **expression-bodied members** for single-expression methods
+
+## API Responses — `BaseResponse<T>`
+- Wrap all responses in `BaseResponse<T>.Ok(data)` or `BaseResponse.Fail(message, errors)`
+- Return meaningful messages: `"Project created"`, `"User not found"`
+
+## Validation — FluentValidation
+- Create `AbstractValidator<T>` for every request DTO
+- Register via `AddValidatorsFromAssemblyContaining<Program>()`
+- Apply with `.AddEndpointFilter<ValidationFilter<T>>()`
+
+## Documentation — XML Summaries
+- `/// <summary>` on all public types, methods, and properties
+- `<inheritdoc />` for interface implementations
+- `<see cref="..." />` for cross-references, `<param>` / `<returns>` on non-trivial methods
+
+```csharp
+// ❌ BAD
+public class UserService { }
+
+// ✅ GOOD
+/// <summary>Manages user lifecycle operations.</summary>
+public class UserService { }
+```
+
+## Testing — xUnit + NSubstitute + FluentAssertions
+- Use **xUnit** with `[Fact]` and `[Theory]` — no NUnit or MSTest
+- Use **NSubstitute** for mocking — `Substitute.For<T>()`
+- Use **FluentAssertions** — `.Should().Be()`, `.Should().BeTrue()`
+- Integration tests use `WebApplicationFactory<Program>` with mocked `IRepository<T>`
+- Test project naming: `ProjectName.Tests` under `tests/`
+- Test class naming: `ClassUnderTestTests` (e.g., `BaseResponseTests`)
+- One `[Fact]` per behavior, use `[Theory]` + `[InlineData]` for parameterized cases
+- Always add `GlobalUsings.cs` with `global using Xunit;`

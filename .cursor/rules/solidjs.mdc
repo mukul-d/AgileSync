@@ -1,0 +1,35 @@
+---
+description: SolidJS component and reactivity conventions
+globs: "**/*.{tsx,jsx}"
+alwaysApply: false
+---
+
+# SolidJS
+
+## Framework
+- Use **SolidJS** — never React, Vue, or Angular
+- Use **Vite** with `vite-plugin-solid` for builds
+- Use **SCSS** for styling with CSS custom properties for theming
+
+## Reactivity
+- Use `createSignal` for local state, `createMemo` for derived values
+- Use `createEffect` for side effects, `createResource` for async data
+- Components are plain functions that run **once** — no re-renders
+
+## Templating
+- Use `<Show>` for conditional rendering, `<For>` for lists
+- Use `<Switch>`/`<Match>` for multi-branch conditionals
+- Avoid ternaries in JSX and never use `.map()` for lists
+
+## Anti-Patterns
+- Never use React patterns: `useState`, `useEffect`, `useMemo`
+- Never add `key` props on list items (SolidJS `<For>` handles identity)
+- Never destructure props (breaks reactivity) — access via `props.x`
+
+## Testing — @solidjs/testing-library
+- Use **@solidjs/testing-library** for component tests — `render`, `screen`, `fireEvent`
+- Use `@testing-library/jest-dom` for DOM matchers (`.toBeInTheDocument()`, etc.)
+- Test environment: `jsdom` (configured in `vite.config.ts`)
+- Always render components via `render(() => <Component />)` (arrow wrapper required)
+- Use `waitFor` for async assertions after user interactions
+- Mock `window.matchMedia` in test setup (jsdom doesn't implement it)

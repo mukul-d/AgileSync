@@ -1,0 +1,26 @@
+---
+description: Mandates test creation for every new feature
+globs: 
+alwaysApply: true
+---
+
+# Testing Required
+
+Every feature implementation MUST include corresponding tests. A feature is not complete until its tests exist and pass.
+
+## Backend (.NET)
+- New endpoint → create integration tests in `tests/ProjectName.Tests/Endpoints/`
+- New request DTO → create validator tests in `tests/ProjectName.Tests/Validators/`
+- New model or utility → create unit tests in `tests/ProjectName.Tests/`
+- Use `WebApplicationFactory<Program>` with NSubstitute mocks for integration tests
+- Run `dotnet test` to verify before considering work done
+
+## Frontend (SolidJS)
+- New component or page → create `src/__tests__/` test file mirroring source structure
+- New utility function → create `src/__tests__/lib/` test file
+- Use `@solidjs/testing-library` for component tests
+- Run `npm test -- --run` to verify before considering work done
+
+## Release Gate
+- All Release builds (`dotnet build -c Release`) automatically run both backend and frontend tests via `Directory.Build.targets`
+- Bypass with `-p:SkipTestValidation=true` only when explicitly needed

@@ -1,0 +1,14 @@
+---
+description: MongoDB data layer conventions
+globs: **/*.{cs,ts,js}
+alwaysApply: false
+---
+
+# MongoDB Data Layer
+
+- Use **MongoDB** as the database — never SQL-based databases
+- In .NET, use the official `MongoDB.Driver` package
+- Define POCO models with `[BsonId]` and `[BsonElement]` attributes
+- Use `IMongoCollection<T>` for data access in repository classes
+- Store configuration (connection string, database name) in `appsettings.json`
+- In the frontend, interact with data only through the .NET API — no direct DB access

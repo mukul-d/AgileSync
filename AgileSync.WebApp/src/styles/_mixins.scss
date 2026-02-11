@@ -1,0 +1,47 @@
+@use 'variables' as *;
+
+// Responsive breakpoints (mobile-first)
+@mixin above($bp) {
+  @media (min-width: map-get($breakpoints, $bp)) {
+    @content;
+  }
+}
+
+@mixin below($bp) {
+  @media (max-width: #{map-get($breakpoints, $bp) - 1px}) {
+    @content;
+  }
+}
+
+// Touch-friendly minimum tap target (44x44 per WCAG)
+@mixin touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+// Truncate text with ellipsis
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Flex center
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// Visually hidden (accessible)
+@mixin sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}

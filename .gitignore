@@ -52,3 +52,12 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Node
+node_modules/
+dist/
+.env
+.env.local
+# Cursor (keep rules, ignore the rest)
+.cursor/*
+!.cursor/rules/
