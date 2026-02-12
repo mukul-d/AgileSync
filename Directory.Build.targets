@@ -1,10 +1,10 @@
 <Project>
-  <!-- Gate: run all tests after any Release build -->
+  <!-- Gate: run all tests once after Release build (fires only from AppHost) -->
   <Target Name="ValidateTestsOnReleaseBuild"
           AfterTargets="Build"
           Condition="'$(Configuration)' == 'Release'
                      AND '$(SkipTestValidation)' != 'true'
-                     AND !$(MSBuildProjectName.EndsWith('.Tests'))">
+                     AND '$(MSBuildProjectName)' == 'AgileSync.AppHost'">
     <Message Importance="High"
              Text="[AgileSync] Running .NET test validation (Release gate)..." />
     <Exec Command="dotnet test &quot;$(MSBuildThisFileDirectory)AgileSync.sln&quot; --configuration $(Configuration) --no-build --verbosity normal" />

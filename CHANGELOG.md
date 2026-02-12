@@ -51,6 +51,9 @@ All notable changes to this project are documented here.
 - Appsettings files contain only empty placeholders — no secrets committed to source control
 - Test factories use dummy connection strings independent of real credentials
 
+### Fixed
+- Release build gate now fires only from AppHost (prevents race condition with unbuilt test DLLs)
+
 ### Changed
 - Restructured project layout from nested `src/` folders to flat Aspire-convention layout
 - Renamed frontend project to `AgileSync.WebApp` for naming consistency
